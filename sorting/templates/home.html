@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta name="viewport" content="initial-scale=1">  
+    <title>My Sorting App - Home</title>
+    <script type="text/javascript">
+        function showForm() {
+            document.getElementById('ft-form').style.display = 'block';
+        }
+        function cancel(){
+          document.getElementById('ft-form').style.display = 'none';
+        }
+        
+    </script>
+</head>
+<style>
+    {% load static %}
+    body {
+        background-image: url("{% static 'main.jpg' %}");
+        background-size: cover; /* Adjust the image size as needed */
+            /* Add other background styling properties as needed */
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 200px;
+            /* Add other text styling properties as needed */
+            animation: glowing 2s ease-in-out infinite;
+            /* Add box properties */
+            border: 2px solid #ffffff; /* Border with 2 pixels width and white color */
+            padding: 10px; /* Padding inside the box to add some space around the text */
+            display: inline-block; /* Make the box size fit the content (the text) */
+        }
+
+        @keyframes glowing {
+            0% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            }
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+        
+   
+
+
+
+        .sort-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .sort {
+    width: 250px;
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    background-color: #1c1c1c;
+    border-radius: 5px;
+    box-shadow: 5px 15px 15px #57fcf9;
+  }
+  .sort footer{
+    background-color: #d2ff9b;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0;
+    margin-right: 2px;
+    box-shadow: 2px 3px 3px #a8d4fc;
+  }
+  
+ 
+  
+  .sort h3 {
+    color: #1c1c1c;
+    font-size: 30px;
+    margin-bottom: 15px;
+  }
+  .sort-container1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .service1 {
+    width: 250px;
+    margin: 30px;
+    padding: 30px;
+    text-align: center;
+    background-color: #1c1c1c;
+    border-radius: 5px;
+    box-shadow: 5px 15px 15px 	#7DF9FF;
+  }
+  
+ 
+
+  .mySlides{
+    width: 100px;
+    height: 100px;
+
+  }
+  .box1 form {
+    max-width: 600px;
+    height: 300px;
+    margin: 0 auto;
+    background: #282828;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-left: 500px;
+    margin-top: 100px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+}
+  
+  .box1 form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #f466da;
+    
+  }
+  
+  
+
+</style>
+
+<body>
+
+    <h1>Welcome to My Sorting App!</h1>
+   
+   
+ 
+   
+    <section id="sort">
+      
+        <div class="sort-container">
+          <div class="sort">
+        
+            <footer><h3><a href="{% url 'linear_search' %}">Go to Linear Search</a></h3></footer>
+          </div>
+          <div class="sort">
+        
+            <footer><h3><a href="{% url 'binary_search' %}">Binary Search</a></h3></footer>
+          </div><div class="sort">
+        
+            <footer><h3><a href="{% url 'insertion_sort' %}">Insertion Sort</a></h3></footer>
+          </div><div class="sort">
+        
+            <footer><h3><a href="{% url 'merge_sort' %}">Merge Sort</a></h3></footer>
+          </div><div class="sort">
+        
+            <footer><h3><a href="{% url 'quick_sort' %}">Quick Sort</a></h3></footer>
+          </div><div class="sort">
+        
+            <footer><h3><a href="{% url 'heap_sort' %}">] Heap Sort </S></a></h3></footer>
+          </div>
+          <div class="sort">
+        
+            <footer><h3><a href="{% url 'bubble_sort' %}">Bubble sort</a></h3></footer>
+          </div>
+          <div class="sort">
+        
+            <footer><h3><a href="{% url 'selection_sort' %}">Selection sort</a></h3></footer>
+          </div>
+        </div>
+      </section>
+   
+</body>
+</html>

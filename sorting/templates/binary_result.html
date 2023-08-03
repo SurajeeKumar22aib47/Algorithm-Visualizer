@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Binary Search Result</title>
+</head>
+<body>
+    <h1>Binary Search Result</h1>
+
+    <p>Input List: {{ input_list }}</p>
+    <p>Search Element: {{ search_element }}</p>
+    <p>Found Index: {{ binary_found_index }}</p>
+
+    <h2>Step-by-Step Search Process:</h2>
+    <ul>
+        {% for step in steps %}
+            <li>
+                Left: {{ step.left }},
+                Right: {{ step.right }},
+                Mid: {{ step.mid }},
+                Mid Element: {{ step.mid_element }},
+                {% if step.found %}
+                    <strong>Found</strong>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

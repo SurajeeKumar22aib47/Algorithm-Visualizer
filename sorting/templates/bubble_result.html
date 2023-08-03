@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bubble Sort Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+}
+
+.container {
+    width: 90vw; /* 90% of the viewport width */
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #262626;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.input-list {
+    margin-bottom: 20px;
+}
+
+#sort-steps {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.swap {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+
+
+
+</style>
+<body>
+    <div class="container">
+        <h1>Bubble Sort Result</h1>
+
+        <div class="input-list">
+            <p><strong>Input List:</strong> {{ input_list }}</p>
+        </div>
+
+        <h2>Step-by-Step Sort Process:</h2>
+        <ul id="sort-steps">
+            {% for step in steps %}
+                <li>
+                    <strong>Step {{ forloop.counter }}:</strong> 
+                    <span class="current-list">{{ step.current_list }}</span>,
+                    {% if step.swap %}
+                        <strong class="swap">Swap</strong>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    
+</body>
+</html>
