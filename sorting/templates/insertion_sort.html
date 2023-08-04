@@ -5,15 +5,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <style>
-        
+       {% load static %}
     body {
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
+        background-image: url("{% static 'new.webp' %}");
+        background-size: cover;
+        background-position: center;
     }
 
     .main-content {
-        background-color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         max-width: 800px;
         margin: 50px auto;
@@ -22,31 +25,21 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
-    /* Background Image Styles */
-    .background-image {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background: url("https://www.softwareimprovementgroup.com/wp-content/uploads/2023/04/visuals01-2019-_0003_SIG-website-56-scaled.jpg") no-repeat center fixed;
-        background-size: cover;
-        filter: blur(5px);
-    }
-
-    /* Heading Styles */
     h1 {
         color: #ff6600;
+        font-size: 36px;
+        margin-bottom: 20px;
     }
 
     h2 {
         color: #007bff;
+        font-size: 28px;
         margin-top: 20px;
     }
 
     p {
         line-height: 1.6;
+        color: #444;
     }
 
     pre {
@@ -54,46 +47,77 @@
         padding: 10px;
         border-radius: 5px;
         overflow-x: auto;
-    }
-
-    /* Form Styles */
-    form {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
         color: #333;
+        font-size: 16px;
     }
 
-    input[type="text"] {
+    .visualize-link {
+        display: inline-block;
+        margin-top: 30px;
+        cursor: pointer;
+        color: #007bff;
+        font-size: 20px;
+        text-decoration: underline;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1;
+    }
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        color: #888;
+    }
+
+    .input-list {
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 10px;
     }
 
-    button {
+    .submit-btn {
         padding: 10px 20px;
         background-color: #007bff;
         color: #fff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        font-size: 16px;
     }
 
-    button:hover {
+    .submit-btn:hover {
         background-color: #0056b3;
     }
 </style>
 <body>
-    <!-- Background Image -->
-    <div class="background-image"></div>
-
     <!-- Main Content -->
     <div class="main-content">
-        <h1>Insertion Sort Visualizer</h1>
+        <h1>Insertion Sort</h1>
         <p>
             Insertion sort is a simple sorting algorithm that builds the final sorted array
             one item at a time. It is much less efficient on large lists than more advanced
@@ -103,28 +127,45 @@
         <h2>Sample Insertion Sort Algorithm</h2>
         <pre>
             <code>
-function insertionSort(arr) {
-    for (let i = 1; i < arr.length; i++) {
-        let key = arr[i];
-        let j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-        arr[j + 1] = key;
-    }
-}
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
             </code>
         </pre>
-   
-        <h2>Enter Your Unsorted Array</h2>
-            <form method="post">
-                {% csrf_token %}
-                <label for="input_list">Enter the list elements (comma-separated):</label><br>
-                <input type="text" id="input_list" name="input_list" required><br>
-                
-                <button type="submit">Sort</button>
-            </form>
+
+        <div class="visualize-link" onclick="openPopup()">Visualize</div>
     </div>
+
+    <!-- Popup -->
+    <div class="overlay" id="popup-overlay">
+        <div class="popup">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Enter Your Unsorted List</h2>
+            <input type="text" class="input-list" id="input_list" placeholder="Enter numbers as comma-separated values" required>
+            <br>
+            <button class="submit-btn" onclick="visualize()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        function openPopup() {
+            document.getElementById("popup-overlay").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("popup-overlay").style.display = "none";
+        }
+
+        function visualize() {
+            const inputList = document.getElementById("input_list").value;
+            const numbers = inputList.split(',').map(Number);
+            console.log(numbers); // Replace this with your visualization code
+        }
+    </script>
 </body>
 </html>
