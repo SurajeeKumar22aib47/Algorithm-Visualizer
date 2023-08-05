@@ -52,28 +52,25 @@ li {
 
 
 </style>
+
 <body>
     <div class="container">
-        <h1>Bubble Sort Result</h1>
-
-        <div class="input-list">
-            <p><strong>Input List:</strong> {{ input_list }}</p>
-        </div>
-
-        <h2>Step-by-Step Sort Process:</h2>
-        <ul id="sort-steps">
-            {% for step in steps %}
-                <li>
-                    <strong>Step {{ forloop.counter }}:</strong> 
-                    <span class="current-list">{{ step.current_list }}</span>,
-                    {% if step.swap %}
-                        <strong class="swap">Swap</strong>
-                    {% endif %}
-                </li>
+        <h1>Bubble Sort Steps</h1>
+        <p>Original Array: 
+            {% for num in input_list %}
+                <span class="array">{{ num }}</span>
             {% endfor %}
-        </ul>
-    </div>
+        </p>
 
-    
+        {% for step in steps %}
+            <p class="step">Step {{ forloop.counter }}:</p>
+            <p>{{ step.explanation }}</p>
+            <p>
+                {% for num in step.step_array %}
+                    <span class="array">{{ num }}</span>
+                {% endfor %}
+            </p>
+        {% endfor %}
+    </div>
 </body>
 </html>

@@ -52,22 +52,23 @@ li {
 
 </style>
 <body>
-    <h1>Insertion Sort Result</h1>
+    <div class="container">
+        <h1>Insertion Sort Steps</h1>
+        <p>Original Array: 
+            {% for num in input_list %}
+                <span class="array">{{ num }}</span>
+            {% endfor %}
+        </p>
 
-    <p>Input List: {{ input_list }}</p>
-
-    <h2>Step-by-Step Sort Process:</h2>
-    <ul>
         {% for step in steps %}
-            <li>
-                Current List: {{ step.current_list }},
-                Key: {{ step.key }},
-                Sorted Elements: {{ step.sorted_elements }},
-                {% if step.swap %}
-                    <strong>Swap</strong>
-                {% endif %}
-            </li>
+            <p class="step">Step {{ forloop.counter }}:</p>
+            <p>{{ step.explanation }}</p>
+            <p>
+                {% for num in step.step_array %}
+                    <span class="array">{{ num }}</span>
+                {% endfor %}
+            </p>
         {% endfor %}
-    </ul>
+    </div>
 </body>
 </html>

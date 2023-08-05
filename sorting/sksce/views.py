@@ -82,67 +82,67 @@ def binary_search(request):
         return render(request, 'binary_result.html', context)
 
     return render(request, 'binary.html')
+from django.shortcuts import render
 
 def insertion_sort(request):
     if request.method == 'POST':
-        input_list = request.POST.get('input_list', '').split(',')
+        input_list = list(map(int, request.POST.get('input_list', '').split(',')))
+        steps = []
 
-        input_list = [int(item.strip()) for item in input_list]
-        steps = []  # Step-by-step list to keep track of each step in the insertion sort process.
+        def insertion_sort_recursive(arr):
+            n = len(arr)
+            for i in range(1, n):
+                key = arr[i]
+                j = i - 1
+                while j >= 0 and key < arr[j]:
+                    arr[j + 1] = arr[j]
+                    j -= 1
+                arr[j + 1] = key
+                steps.append({
+                    'step_array': list(arr),
+                    'explanation': f'Insert {key} into the correct position'
+                })
 
-        for i in range(1, len(input_list)):
-            key = input_list[i]
-            j = i - 1
-
-            step = {
-                'current_list': input_list[:],  # Create a copy of the current list for the step.
-                'key': key,
-                'sorted_elements': input_list[:i],
-                'swap': False
-            }
-
-            while j >= 0 and input_list[j] > key:
-                input_list[j + 1] = input_list[j]
-                j -= 1
-                step['swap'] = True
-
-            input_list[j + 1] = key
-            steps.append(step)
+        insertion_sort_recursive(input_list)
 
         context = {
-            'input_list': request.POST.get('input_list', ''),
-            'steps': steps,  # Include the steps list in the context.
+            'input_list': input_list,
+            'steps': steps,
         }
 
         return render(request, 'insertion_result.html', context)
 
     return render(request, 'insertion_sort.html')
+
+
 def bubble_sort(request):
     if request.method == 'POST':
-        input_list = request.POST.get('input_list', '').split(',')
-        input_list = [int(item.strip()) for item in input_list]
-        steps = []  # Step-by-step list to keep track of each step in the bubble sort process.
+        input_list = list(map(int, request.POST.get('input_list', '').split(',')))
+        steps = []
 
-        for i in range(len(input_list)):
-            swapped = False
-            for j in range(len(input_list) - i - 1):
-                step = {
-                    'current_list': input_list[:],  # Create a copy of the current list for the step.
-                    'swap': False
-                }
-                if input_list[j] > input_list[j + 1]:
-                    input_list[j], input_list[j + 1] = input_list[j + 1], input_list[j]
-                    step['swap'] = True
-                    swapped = True
-                steps.append(step)
+        def bubble_sort_recursive(arr):
+            n = len(arr)
+            for i in range(n):
+                # Flag to check if any swap occurred during this iteration
+                swapped = False
+                for j in range(0, n - i - 1):
+                    if arr[j] > arr[j + 1]:
+                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                        swapped = True
+                        steps.append({
+                            'step_array': list(arr),
+                            'explanation': f'Swap {arr[j]} and {arr[j + 1]}'
+                        })
 
-            # If no swaps happened during the inner loop, the list is already sorted.
-            if not swapped:
-                break
+                # If no swaps occurred in this iteration, the list is sorted
+                if not swapped:
+                    break
+
+        bubble_sort_recursive(input_list)
 
         context = {
-            'input_list': request.POST.get('input_list', ''),
-            'steps': steps,  # Include the steps list in the context.
+            'input_list': input_list,
+            'steps': steps,
         }
 
         return render(request, 'bubble_result.html', context)
@@ -151,88 +151,100 @@ def bubble_sort(request):
 
 
 
+
 def merge_sort(request):
     if request.method == 'POST':
         input_list = list(map(int, request.POST.get('input_list', '').split(',')))
+        steps = []
 
-        def merge_sort_recursive(lst, steps):
-            if len(lst) <= 1:
-                return lst
+        def merge(arr, left, mid, right):
+            left_arr = arr[left:mid+1]
+            right_arr = arr[mid+1:right+1]
+            i, j, k = 0, 0, left
 
-            mid = len(lst) // 2
-            left = merge_sort_recursive(lst[:mid], steps)
-            right = merge_sort_recursive(lst[mid:], steps)
-
-            merged_list = []
-            left_index, right_index = 0, 0
-
-            step = {
-                'left': left[:],
-                'right': right[:],
-                'merged': [],
-            }
-
-            while left_index < len(left) and right_index < len(right):
-                if left[left_index] <= right[right_index]:
-                    merged_list.append(left[left_index])
-                    left_index += 1
+            while i < len(left_arr) and j < len(right_arr):
+                if left_arr[i] <= right_arr[j]:
+                    arr[k] = left_arr[i]
+                    i += 1
                 else:
-                    merged_list.append(right[right_index])
-                    right_index += 1
+                    arr[k] = right_arr[j]
+                    j += 1
+                k += 1
 
-            merged_list += left[left_index:]
-            merged_list += right[right_index:]
+            while i < len(left_arr):
+                arr[k] = left_arr[i]
+                i += 1
+                k += 1
 
-            step['merged'] = merged_list
-            steps.append(step)
+            while j < len(right_arr):
+                arr[k] = right_arr[j]
+                j += 1
+                k += 1
 
-            return merged_list
+        def merge_sort_recursive(arr, left, right):
+            if left < right:
+                mid = (left + right) // 2
+                merge_sort_recursive(arr, left, mid)
+                merge_sort_recursive(arr, mid + 1, right)
+                merge(arr, left, mid, right)
+                steps.append({
+                    'step_array': list(arr),
+                    'explanation': f'Merged subarrays from index {left} to {mid} and {mid+1} to {right}'
+                })
 
-        steps = []  # Step-by-step list to keep track of each step in the merge sort process.
-        sorted_list = merge_sort_recursive(input_list, steps)
+        merge_sort_recursive(input_list, 0, len(input_list) - 1)
 
         context = {
             'input_list': input_list,
-            'sorted_list': sorted_list,
-            'steps': steps,  # Include the steps list in the context.
+            'steps': steps,
         }
 
         return render(request, 'merge_result.html', context)
 
     return render(request, 'merge.html')
 
+from django.shortcuts import render
 
 def selection_sort(request):
     if request.method == 'POST':
         input_list = list(map(int, request.POST.get('input_list', '').split(',')))
+        steps = []
 
-        steps = []  # Step-by-step list to keep track of each step in the selection sort process.
+        def selection_sort_recursive(arr):
+            n = len(arr)
+            for i in range(n):
+                min_idx = i
+                for j in range(i + 1, n):
+                    if arr[j] < arr[min_idx]:
+                        min_idx = j
 
-        for i in range(len(input_list)):
-            min_index = i
-            for j in range(i + 1, len(input_list)):
-                if input_list[j] < input_list[min_index]:
-                    min_index = j
+                arr[i], arr[min_idx] = arr[min_idx], arr[i]
+                steps.append({
+                    'step_array': list(arr),
+                    'explanation': f'Swap {arr[i]} and {arr[min_idx]} (minimum element)'
+                })
 
-            input_list[i], input_list[min_index] = input_list[min_index], input_list[i]
-
-            # Save a copy of the current list for this step.
-            steps.append(input_list[:])
+        selection_sort_recursive(input_list)
 
         context = {
             'input_list': input_list,
-            'steps': steps,  # Include the steps list in the context.
+            'steps': steps,
         }
 
         return render(request, 'selection_result.html', context)
 
     return render(request, 'selection.html')
 
+
+from django.shortcuts import render
+
 def heap_sort(request):
     if request.method == 'POST':
         input_list = list(map(int, request.POST.get('input_list', '').split(',')))
+        steps = []
+        heap_size = len(input_list)
 
-        def heapify(arr, n, i, steps):
+        def heapify(arr, n, i):
             largest = i
             left_child = 2 * i + 1
             right_child = 2 * i + 2
@@ -245,38 +257,48 @@ def heap_sort(request):
 
             if largest != i:
                 arr[i], arr[largest] = arr[largest], arr[i]
-                heapify(arr, n, largest, steps)
+                steps.append({
+                    'step_array': list(arr),
+                    'explanation': f'Swap {arr[i]} and {arr[largest]} to satisfy the max heap property'
+                })
+                heapify(arr, n, largest)
 
-            # Save a copy of the current list for this step.
-            steps.append(arr[:])
+        def build_max_heap(arr):
+            for i in range(heap_size // 2 - 1, -1, -1):
+                heapify(arr, heap_size, i)
 
-        def heap_sort_recursive(arr, steps):
-            n = len(arr)
-
-            for i in range(n // 2 - 1, -1, -1):
-                heapify(arr, n, i, steps)
-
-            for i in range(n - 1, 0, -1):
+        def heap_sort_recursive(arr):
+            build_max_heap(arr)
+            for i in range(heap_size - 1, 0, -1):
                 arr[i], arr[0] = arr[0], arr[i]
-                heapify(arr, i, 0, steps)
+                steps.append({
+                    'step_array': list(arr),
+                    'explanation': f'Swap {arr[i]} (root) and {arr[0]} to move the largest element to the end'
+                })
+                heapify(arr, i, 0)
 
-        steps = []  # Step-by-step list to keep track of each step in the heap sort process.
-        heap_sort_recursive(input_list, steps)
+        heap_sort_recursive(input_list)
 
         context = {
             'input_list': input_list,
-            'steps': steps,  # Include the steps list in the context.
+            'steps': steps,
         }
 
         return render(request, 'heap_result.html', context)
 
     return render(request, 'heap.html')
 
+
+
+
+from django.shortcuts import render
+
 def quick_sort(request):
     if request.method == 'POST':
         input_list = list(map(int, request.POST.get('input_list', '').split(',')))
+        steps = []
 
-        def partition(arr, low, high, steps):
+        def partition(arr, low, high):
             pivot = arr[high]
             i = low - 1
 
@@ -284,29 +306,43 @@ def quick_sort(request):
                 if arr[j] <= pivot:
                     i += 1
                     arr[i], arr[j] = arr[j], arr[i]
+                    steps.append({
+                        'step_array': list(arr),
+                        'explanation': f'Swap {arr[i]} and {arr[j]}'
+                    })
 
             arr[i + 1], arr[high] = arr[high], arr[i + 1]
-
-            # Save a copy of the current list for this step.
-            steps.append(arr[:])
+            steps.append({
+                'step_array': list(arr),
+                'explanation': f'Swap {arr[i + 1]} (pivot) and {arr[high]}'
+            })
 
             return i + 1
 
-        def quick_sort_recursive(arr, low, high, steps):
+        def quick_sort_recursive(arr, low, high):
             if low < high:
-                pi = partition(arr, low, high, steps)
+                pivot_index = partition(arr, low, high)
+                quick_sort_recursive(arr, low, pivot_index - 1)
+                quick_sort_recursive(arr, pivot_index + 1, high)
 
-                quick_sort_recursive(arr, low, pi - 1, steps)
-                quick_sort_recursive(arr, pi + 1, high, steps)
-
-        steps = []  # Step-by-step list to keep track of each step in the quicksort process.
-        quick_sort_recursive(input_list, 0, len(input_list) - 1, steps)
+        quick_sort_recursive(input_list, 0, len(input_list) - 1)
 
         context = {
             'input_list': input_list,
-            'steps': steps,  # Include the steps list in the context.
+            'steps': steps,
         }
 
-        return render(request, 'quick_result.html', context)
+        return render(request, 'quick_.html', context)
 
     return render(request, 'quick.html')
+
+def generate_explanations(steps):
+    explanations = []
+    for step_num, step_list in steps:
+        step_explanation = []
+        step_explanation.append(f"Step {step_num + 1}:")
+        step_explanation.append("We choose a pivot element and partition the list such that elements less than or equal to the pivot are to its left, and elements greater than the pivot are to its right.")
+        step_explanation.append(f"Pivot: {step_list[-1]}")
+        step_explanation.append(f"Current List: {step_list}")
+        explanations.append(step_explanation)
+    return explanations
