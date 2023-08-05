@@ -50,20 +50,24 @@ li {
 
 </style>
 <body>
-    <h1>Merge Sort Result</h1>
+    <div class="container">
+        <h1>Merge Sort Steps</h1>
+        <p>Original Array: 
+            {% for num in input_list %}
+                <span class="array">{{ num }}</span>
+            {% endfor %}
+        </p>
 
-    <p>Input List: {{ input_list }}</p>
-    <p>Sorted List: {{ sorted_list }}</p>
-
-    <h2>Step-by-Step Sort Process:</h2>
-    <ul>
         {% for step in steps %}
-            <li>
-                Left: {{ step.left }},
-                Right: {{ step.right }},
-                Merged: {{ step.merged }}
-            </li>
+            <p class="step">Step {{ forloop.counter }}:</p>
+            <p>{{ step.explanation }}</p>
+            <p>
+                {% for num in step.step_array %}
+                    <span class="array">{{ num }}</span>
+                {% endfor %}
+            </p>
         {% endfor %}
-    </ul>
+    </div>
 </body>
+
 </html>

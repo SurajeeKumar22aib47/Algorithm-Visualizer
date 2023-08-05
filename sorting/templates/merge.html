@@ -129,7 +129,8 @@
             <div class="popup-content">
                 <span class="close-button" onclick="closePopup()">&times;</span>
                 <h2 style="font-size: 24px; color: #007bff;">Enter Your Unsorted Array</h2>
-                <form method="post" onsubmit="event.preventDefault(); performHeapSort();">
+                <form method="post" >
+                    {% csrf_token %}
                     <label class="input-label" for="input_list">Enter the list elements (comma-separated):</label>
                     <input class="input-field" type="text" id="input_list" name="input_list" required><br>
                     <button class="submit-button" type="submit">Sort</button>

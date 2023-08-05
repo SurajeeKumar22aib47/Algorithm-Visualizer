@@ -1,64 +1,38 @@
+<!-- quick_result.html -->
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Quick Sort Result</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
 </head>
-<style>
-    /body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #1a1a1a;
-    color: #f0f0f0;
-}
-
-.container {
-    width: 90vw; /* 90% of the viewport width */
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #262626;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-h1 {
-    text-align: center;
-    color: #f0f0f0;
-}
-
-.input-list {
-    margin-bottom: 20px;
-}
-
-#sort-steps {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 10px;
-}
-
-.swap {
-    color: #ff4d4d;
-    font-weight: bold;
-}
-
-
-
-
-</style>
 <body>
-    <h1>Quick Sort Result</h1>
+    <div class="container">
+        <h1>Quick Sort Steps</h1>
+        <p>Original Array: 
+            {% for num in input_list %}
+                <span class="array">{{ num }}</span>
+            {% endfor %}
+        </p>
 
-    <p>Input List: {{ input_list }}</p>
-
-    <h2>Step-by-Step Sort Process:</h2>
-    <ul>
         {% for step in steps %}
-            <li>{{ step }}</li>
+            <p class="step">Step {{ forloop.counter }}:</p>
+            <p>{{ step.explanation }}</p>
+            <p>
+                {% for num in step.step_array %}
+                    <span class="array">{{ num }}</span>
+                {% endfor %}
+            </p>
         {% endfor %}
-    </ul>
+    </div>
 </body>
 </html>
