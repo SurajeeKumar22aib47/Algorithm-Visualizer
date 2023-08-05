@@ -5,18 +5,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <style>
-       {% load static %}
     body {
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
-        background-image: url("{% static 'new.webp' %}");
+        background-image: url("https://www.softwareimprovementgroup.com/wp-content/uploads/2023/04/visuals01-2019-_0003_SIG-website-56-scaled.jpg");
         background-size: cover;
         background-position: center;
+        background-attachment: fixed;
     }
 
     .main-content {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         max-width: 800px;
         margin: 50px auto;
@@ -25,146 +25,135 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
-    h1 {
-        color: #ff6600;
-        font-size: 36px;
-        margin-bottom: 20px;
-    }
-
-    h2 {
-        color: #007bff;
-        font-size: 28px;
-        margin-top: 20px;
-    }
-
-    p {
-        line-height: 1.6;
-        color: #444;
-    }
-
-    pre {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 5px;
-        overflow-x: auto;
-        color: #333;
-        font-size: 16px;
-    }
-
-    .visualize-link {
+    .visualize-button {
         display: inline-block;
-        margin-top: 30px;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
         cursor: pointer;
-        color: #007bff;
-        font-size: 20px;
-        text-decoration: underline;
     }
 
-    .overlay {
-        display: none;
+    .popup {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out;
     }
 
-    .popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #ffffff;
-        padding: 30px;
-        border-radius: 5px;
+    .popup.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .popup-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        z-index: 2;
+        max-width: 400px;
     }
 
-    .close {
+    .close-button {
         position: absolute;
         top: 10px;
         right: 10px;
+        color: #555;
+        font-size: 18px;
         cursor: pointer;
-        color: #888;
     }
 
-    .input-list {
+    .input-label {
+        display: block;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .input-field {
+        width: 100%;
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
-        width: 100%;
-        max-width: 400px;
-        margin-bottom: 10px;
     }
 
-    .submit-btn {
-        padding: 10px 20px;
+    .submit-button {
         background-color: #007bff;
         color: #fff;
+        padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
-    }
-
-    .submit-btn:hover {
-        background-color: #0056b3;
     }
 </style>
 <body>
     <!-- Main Content -->
     <div class="main-content">
-        <h1>Insertion Sort</h1>
-        <p>
+        <h1 style="font-size: 36px; color: #007bff;">Insertion Sort Visualizer</h1>
+        <p style="font-size: 18px; color: #444; line-height: 1.6;">
             Insertion sort is a simple sorting algorithm that builds the final sorted array
             one item at a time. It is much less efficient on large lists than more advanced
             algorithms such as quicksort, heapsort, or merge sort.
         </p>
 
-        <h2>Sample Insertion Sort Algorithm</h2>
-        <pre>
-            <code>
-def insertion_sort(arr):
+        <h2 style="font-size: 24px; color: #007bff; margin-top: 20px;">Sample Insertion Sort Algorithm</h2>
+        <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; color: #333;">
+<code>
+    <h2>Sample Insertion Sort Algorithm</h2>
+    
+    def insertion_sort(arr):
     for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        while j >= 0 and key < arr[j]:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
-            </code>
-        </pre>
+    key = arr[i]
+    j = i - 1
+    while j >= 0 and arr[j] > key:
+        arr[j + 1] = arr[j]
+        j -= 1
+    arr[j + 1] = key
+        
+    </code>
+            </pre>
+   
+        <div class="visualize-button" onclick="openPopup()">Visualize</div>
 
-        <div class="visualize-link" onclick="openPopup()">Visualize</div>
-    </div>
-
-    <!-- Popup -->
-    <div class="overlay" id="popup-overlay">
-        <div class="popup">
-            <span class="close" onclick="closePopup()">&times;</span>
-            <h2>Enter Your Unsorted List</h2>
-            <input type="text" class="input-list" id="input_list" placeholder="Enter numbers as comma-separated values" required>
-            <br>
-            <button class="submit-btn" onclick="visualize()">Submit</button>
+        <!-- Pop-up Box -->
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <span class="close-button" onclick="closePopup()">&times;</span>
+                <h2 style="font-size: 24px; color: #007bff;">Enter Your Unsorted Array</h2>
+                <form method="post" onsubmit="event.preventDefault(); performHeapSort();">
+                    <label class="input-label" for="input_list">Enter the list elements (comma-separated):</label>
+                    <input class="input-field" type="text" id="input_list" name="input_list" required><br>
+                    <button class="submit-button" type="submit">Sort</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
         function openPopup() {
-            document.getElementById("popup-overlay").style.display = "block";
+            document.getElementById('popup').classList.add('active');
         }
 
         function closePopup() {
-            document.getElementById("popup-overlay").style.display = "none";
+            document.getElementById('popup').classList.remove('active');
         }
 
-        function visualize() {
-            const inputList = document.getElementById("input_list").value;
-            const numbers = inputList.split(',').map(Number);
-            console.log(numbers); // Replace this with your visualization code
+        function performHeapSort() {
+            const inputList = document.getElementById('input_list').value;
+            const arr = inputList.split(',').map(Number);
+
+            // Call your heapSort() function here with the array 'arr'
+
+            closePopup();
         }
     </script>
 </body>
