@@ -1,19 +1,22 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Binary Search</title>
+    <title>Binary Search Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <style>
-        
     body {
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
+        background-image: url("https://www.softwareimprovementgroup.com/wp-content/uploads/2023/04/visuals01-2019-_0003_SIG-website-56-scaled.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
     }
 
     .main-content {
-        background-color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         max-width: 800px;
         margin: 50px auto;
@@ -22,115 +25,143 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
-    /* Background Image Styles */
-    .background-image {
+    .visualize-button {
+        display: inline-block;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .popup {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1;
-        background: url("https://www.softwareimprovementgroup.com/wp-content/uploads/2023/04/visuals01-2019-_0003_SIG-website-56-scaled.jpg") no-repeat center fixed;
-        background-size: cover;
-        filter: blur(5px);
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out;
     }
 
-    /* Heading Styles */
-    h1 {
-        color: #ff6600;
+    .popup.active {
+        opacity: 1;
+        pointer-events: auto;
     }
 
-    h2 {
-        color: #007bff;
-        margin-top: 20px;
+    .popup-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
     }
 
-    p {
-        line-height: 1.6;
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #555;
+        font-size: 18px;
+        cursor: pointer;
     }
 
-    pre {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 5px;
-        overflow-x: auto;
-    }
-
-    /* Form Styles */
-    form {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    label {
+    .input-label {
         display: block;
-        margin-bottom: 5px;
-        color: #333;
+        margin-bottom: 10px;
+        color: #555;
     }
 
-    input[type="text"] {
+    .input-field {
+        width: 100%;
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
     }
 
-    button {
-        padding: 10px 20px;
+    .submit-button {
         background-color: #007bff;
         color: #fff;
+        padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
     }
-
-    button:hover {
-        background-color: #0056b3;
-    }
 </style>
 <body>
-    <!-- Background Image -->
-    <div class="background-image"></div>
-
     <!-- Main Content -->
     <div class="main-content">
-        <h1>Binary Search Visualizer</h1>
-        <p>
-            Binary search is an efficient search algorithm that finds the position of a target
-            value within a sorted array. It compares the target value to the middle element of the
-            array and eliminates half of the remaining elements at each step.
+        <h1 style="font-size: 36px; color: #007bff;">Binary Search Visualizer</h1>
+        <p style="font-size: 18px; color: #444; line-height: 1.6;">
+            Binary Search is an efficient searching algorithm for sorted lists. It repeatedly divides the list in half and compares the target value with the middle element. If the target is smaller, it searches the left half; if larger, the right half. It continues this process until the target is found or the search space is empty. With a time complexity of O(log n), it is suitable for large datasets.
         </p>
 
-        <h2>Sample Binary Search Algorithm</h2>
-        <pre>
-            <code>
-function binarySearch(arr, target) {
-    let left = 0;
-    let right = arr.length - 1;
+        <h2 style="font-size: 24px; color: #007bff; margin-top: 20px;">Sample Binary Search Algorithm</h2>
+        <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; color: #333;">
+<code>
+    <h2>Sample Binary Search Algorithm</h2>
+    def binary_search(arr, target):
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+if index != -1:
+    print(f"Target {target_number} found at index {index}.")
+else:
+    print("Target not found in the list.")        
+    </code>
+            </pre>
+   
+        <div class="visualize-button" onclick="openPopup()">Visualize</div>
+<!-- Popup Box -->
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <span class="close-button" onclick="closePopup()">&times;</span>
+                <h2 style="font-size: 24px; color: #007bff;">Enter Your Sorted Array</h2>
+                <form method="post" onsubmit="event.preventDefault(); performBinarySearch();">
+                    <label class="input-label" for="input_list">Enter the list elements (comma-separated):</label>
+                    <input class="input-field" type="text" id="input_list" name="input_list" required><br>
+                    <label class="input-label" for="search_element">Enter the element to be searched:</label>
+                    <input class="input-field" type="text" id="search_element" name="search_element" required><br>
+                    <button onclick="openPopup()">Search</button>
 
-    while (left <= right) {
-        let mid = Math.floor((left + right) / 2);
+                </form>
+            </div>
+        </div>
+    </div>
 
-        if (arr[mid] === target) {
-            return mid;
-        } else if (arr[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
+<!-- Rest of your content goes here -->
+
+    <script>
+        function openPopup() {
+            document.getElementById('popup').style.display = 'block';
         }
-    }
 
-    return -1;
-}
-            </code>
-        </pre>
-    <h1>Binarys Search</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="input_list">Enter the list elements (comma-separated):</label><br>
-        <input type="text" id="input_list" name="input_list" required><br>
-        <label for="search_element">Enter the element to search:</label><br>
-        <input type="text" id="search_element" name="search_element" required><br>
-        <button type="submit">Search</button>
-    </form>
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function performBinarySearch() {
+            const inputList = document.getElementById('input_list').value;
+            const numbers = inputList.split(',').map(item => Number(item.trim()));
+            const searchElement = Number(document.getElementById('search_element').value);
+            // Implement binary search logic here
+            // For visualizing, you can use animation or console logs
+        }
+    </script>
 </body>
 </html>
