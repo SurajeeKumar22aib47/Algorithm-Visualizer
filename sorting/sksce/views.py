@@ -332,7 +332,7 @@ def quick_sort(request):
             'steps': steps,
         }
 
-        return render(request, 'quick_.html', context)
+        return render(request, 'quick_result.html', context)
 
     return render(request, 'quick.html')
 
