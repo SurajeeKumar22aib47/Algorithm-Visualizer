@@ -7,6 +7,7 @@ from django.shortcuts import render
 def home(request):
     return render(request,'home.html')
 
+
 def linear_search(request):
     if request.method == 'POST':
         input_list = request.POST.get('input_list', '').split(',')
@@ -82,7 +83,7 @@ def binary_search(request):
         return render(request, 'binary_result.html', context)
 
     return render(request, 'binary.html')
-from django.shortcuts import render
+
 
 def insertion_sort(request):
     if request.method == 'POST':
@@ -148,6 +149,8 @@ def bubble_sort(request):
         return render(request, 'bubble_result.html', context)
 
     return render(request, 'bubble_sort.html')
+def bubble_vis(request):
+    return render(request,'bubble_vis.html')
 
 
 
@@ -158,8 +161,8 @@ def merge_sort(request):
         steps = []
 
         def merge(arr, left, mid, right):
-            left_arr = arr[left:mid+1]
-            right_arr = arr[mid+1:right+1]
+            left_arr = arr[left:mid + 1]
+            right_arr = arr[mid + 1:right + 1]
             i, j, k = 0, 0, left
 
             while i < len(left_arr) and j < len(right_arr):
@@ -189,10 +192,30 @@ def merge_sort(request):
                 merge(arr, left, mid, right)
                 steps.append({
                     'step_array': list(arr),
-                    'explanation': f'Merged subarrays from index {left} to {mid} and {mid+1} to {right}'
+                    'explanation': f'Merged subarrays from index {left} to {mid} and {mid + 1} to {right}',
+                    'swap_indices': None,  # Placeholder for swap indices
                 })
 
+        def animate_merge_sort(step):
+            arr = step['step_array']
+            n = len(arr)
+            for i in range(n - 1):
+                min_idx = i
+                for j in range(i + 1, n):
+                    if arr[j] < arr[min_idx]:
+                        min_idx = j
+
+                if min_idx != i:
+                    step['swap_indices'] = (i, min_idx)
+                    arr[i], arr[min_idx] = arr[min_idx], arr[i]
+                    steps.append({
+                        'step_array': list(arr),
+                        'explanation': f'Swap elements at index {i} and {min_idx}',
+                        'swap_indices': (i, min_idx),
+                    })
+
         merge_sort_recursive(input_list, 0, len(input_list) - 1)
+        animate_merge_sort(steps[-1])  # Animate the last step
 
         context = {
             'input_list': input_list,
@@ -203,7 +226,9 @@ def merge_sort(request):
 
     return render(request, 'merge.html')
 
-from django.shortcuts import render
+def merge_vis(request):
+    return render(request,'merge_vis.html')
+
 
 def selection_sort(request):
     if request.method == 'POST':
@@ -234,9 +259,12 @@ def selection_sort(request):
         return render(request, 'selection_result.html', context)
 
     return render(request, 'selection.html')
+def selection_vis(request):
+    return render(request,'selection_vis.html')
 
 
-from django.shortcuts import render
+
+
 
 def heap_sort(request):
     if request.method == 'POST':
@@ -291,7 +319,6 @@ def heap_sort(request):
 
 
 
-from django.shortcuts import render
 
 def quick_sort(request):
     if request.method == 'POST':
@@ -335,6 +362,8 @@ def quick_sort(request):
         return render(request, 'quick_result.html', context)
 
     return render(request, 'quick.html')
+def quick_vis(request):
+    return render(request,'quick_vis.html')
 
 def generate_explanations(steps):
     explanations = []

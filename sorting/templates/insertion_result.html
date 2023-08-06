@@ -125,6 +125,15 @@
     .back-button:hover {
         background-color: #cc0000;
     }
+    .array {
+    /* ... other CSS rules ... */
+        transition: transform 0.5s ease;
+    }
+
+/* Add a CSS class to represent the swapping animation */
+    .array.swapping {
+        transform: translateX(100px); /* Adjust the distance as needed */
+    }
 </style>
 
 <body>
@@ -182,51 +191,62 @@
     {% endfor %}
 
     <a href="#" class="back-button" onclick="goBack()">Back</a>
+    <button id="play-button" onclick="playAnimation()">Play</button>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function animateSwap(element1, element2) {
-            var temp = $('<div>');
-            element1.before(temp);
-            element2.before(element1);
-            temp.before(element2);
-            temp.remove();
-        }
+element1.addClass('swapping');
+element2.addClass('swapping');
 
-        function highlightSwap(element1, element2) {
-            element1.addClass('green');
-            element2.addClass('green');
-            setTimeout(() => {
-                element1.removeClass('green');
-                element2.removeClass('green');
-            }, 500);
-        }
+// Use a setTimeout to ensure the animation runs before removing the swapping class
+setTimeout(() => {
+element1.before(element2);
+element2.before(element1);
+element1.removeClass('swapping');
+element2.removeClass('swapping');
+}, 500); // 500 milliseconds, adjust as needed for the transition duration
+}
 
-        function performSwap(stepNumber) {
-            var step = steps[stepNumber - 1];
-            var element1 = $(`#popup-box-${stepNumber} .popup-content .array:nth-child(${step.swap_indices[0] + 1})`);
-            var element2 = $(`#popup-box-${stepNumber} .popup-content .array:nth-child(${step.swap_indices[1] + 1})`);
+function highlightSwap(element1, element2) {
+element1.addClass('green');
+element2.addClass('green');
+setTimeout(() => {
+element1.removeClass('green');
+element2.removeClass('green');
+}, 500);
+}
 
-            animateSwap(element1, element2);
-            highlightSwap(element1, element2);
-        }
-    
-        function showPopup(stepNumber) {
-            var popupBox = document.getElementById("popup-box-" + stepNumber);
-            if (popupBox) {
-                popupBox.style.display = "block";
-            }
-        }
+function performSwap(stepNumber) {
+var step = steps[stepNumber - 1];
+var element1 = $(`#popup-box-${stepNumber} .popup-content .array:nth-child(${step.swap_indices[0] + 1})); var element2 = <span class="math-inline">\(\#popup-box-{stepNumber} .popup-content .array:nth-child(${step.swap_indices[1] + 1})`);
 
-        function hidePopup(stepNumber) {
-            var popupBox = document.getElementById("popup-box-" + stepNumber);
-            if (popupBox) {
-                popupBox.style.display = "none";
-            }
-        }
+animateSwap(element1, element2);
+highlightSwap(element1, element2);
+}
 
-        function goBack() {
-            window.history.back();
-        }
+function showPopup(stepNumber) {
+var popupBox = document.getElementById("popup-box-" + stepNumber);
+if (popupBox) {
+popupBox.style.display = "block";
+}
+}
+
+function hidePopup(stepNumber) {
+var popupBox = document.getElementById("popup-box-" + stepNumber);
+if (popupBox) {
+popupBox.style.display = "none";
+}
+}
+
+function goBack() {
+window.history.back();
+}
+
+function animateInsertionSort() {
+for (var stepNumber = 1; stepNumber <= steps.length; stepNumber++) {
+performSwap(stepNumber);
+}
+}
     </script>
 </body>
 </html>

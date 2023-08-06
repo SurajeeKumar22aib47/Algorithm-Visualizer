@@ -10,9 +10,10 @@ urlpatterns=[
     path('selection_sort',views.selection_sort,name='selection_sort'),
     path('quick_sort',views.quick_sort,name='quick_sort'),
     path('heap_sort',views.heap_sort,name='heap_sort'),
-
-
-
+    path('merge_vis', views.merge_vis, name='merge_vis'),
+    path('selection_vis', views.selection_vis, name='selection_vis'),
+    path('bubble_vis', views.bubble_vis, name='bubble_vis'),
+    path('quick_vis', views.quick_vis, name='quick_vis'),
 ]
 
  
