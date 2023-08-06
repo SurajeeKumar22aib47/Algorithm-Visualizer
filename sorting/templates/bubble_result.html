@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bubble Sort Result</title>
+    <title>Heap Sort Result</title>
 </head>
-<style>
-    body {
+    <!-- ... (the rest of the head section remains unchanged) ... -->
+    <style>
+        body {
         font-family: "Arial", sans-serif;
         margin: 0;
         padding: 0;
@@ -125,10 +126,48 @@
     .back-button:hover {
         background-color: #cc0000;
     }
-</style>
+        /* ... (the rest of the CSS styles remain unchanged) ... */
+
+        /* Additional styles for the Start button */
+        .start-button-container {
+            text-align: center;
+            margin-top: 30vh; /* Adjust the value as needed */
+        }
+
+        .start-button {
+            background-color: #ff4d4d;
+            color: #f0f0f0;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .start-button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Animated step showing/hiding */
+        .hidden-step {
+            display: none;
+        }
+
+        .fade-in-step {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .fade-in-step.show {
+            opacity: 1;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
-        <h1>Bubble Sort Steps</h1>
+        <h1>Heap Sort Steps</h1>
         <p>Original Array: 
             {% for num in input_list %}
                 <span class="array">{{ num }}</span>
@@ -161,10 +200,41 @@
             </div>
         </div>
     {% endfor %}
+        <!-- ... (rest of the content remains unchanged) ... -->
+
+        <!-- Start button -->
+        <div class="start-button-container">
+            <button class="start-button" onclick="showStep(1)">Start</button>
+        </div>
+
+        <!-- Hidden steps -->
+        {% for step in steps %}
+            <div class="popup hidden-step fade-in-step" id="popup-box-{{ forloop.counter }}">
+                <!-- ... (rest of the popup content remains unchanged) ... -->
+            </div>
+        {% endfor %}
+    </div>
 
     <a href="#" class="back-button" onclick="goBack()">Back</a>
 
     <script>
+        // Function to show the step with animation
+        function showStep(stepNumber) {
+            var popupBox = document.getElementById("popup-box-" + stepNumber);
+            if (popupBox) {
+                popupBox.classList.add("show");
+                popupBox.classList.remove("hidden-step");
+            }
+        }
+
+        // Function to hide the step with animation
+        function hideStep(stepNumber) {
+            var popupBox = document.getElementById("popup-box-" + stepNumber);
+            if (popupBox) {
+                popupBox.classList.remove("show");
+                popupBox.classList.add("hidden-step");
+            }
+        }
         function showPopup(stepNumber) {
             var popupBox = document.getElementById("popup-box-" + stepNumber);
             if (popupBox) {
