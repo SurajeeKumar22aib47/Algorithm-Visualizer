@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+            {% load static %}
+    body {
+        background-image: url("{% static 'vis.jpg' %}");
+        background-size: cover; /* Adjust the image size as needed */
+            /* Add other background styling properties as needed */
+        }
+        
+            #mainContainer{
+                position: relative;
+            }
+
+            .inputdivField{
+                
+                height: 50px;
+                width: 50px;
+                background: rgb(0, 0, 0);
+                position: absolute;
+                font-size: large;
+                text-align: center;
+                padding-top: 20px;
+                color: white;
+                
+                
+            }
+
+            
+        </style>
+
+        <script>
+
+            var animationArray = [];
+            var inactiveColor = "rgb(0, 0, 0)";
+            var activeColor = "rgb(255,0,0)";
+
+            function generateField(){
+                container = document.getElementById("mainContainer");
+                newField = document.createElement("div");
+                newField.contentEditable = "true";
+                inputId = container.childElementCount + 1;
+                newField.id = "input" + inputId;
+                newField.className = "inputdivField";
+                newField.style.left = (container.childElementCount * 80) + "px"
+                document.getElementById("mainContainer").appendChild(newField);
+            }
+
+            function resetFields(){
+                animationArray = [];
+                container = document.getElementById("mainContainer");
+                while (container.firstChild){
+                    container.removeChild(container.firstChild);
+                }
+            }
+
+
+
+            function moveFields(fieldArray,li,ri,end,level,group){
+                var subArray1 = fieldArray.slice(0,li);
+                var subArray2 = fieldArray.slice(end+1,fieldArray.length);
+
+                
+
+                var newArray = [];
+                var pos = li;
+                var liEnd = ri;
+                
+
+                while(li<liEnd && ri<=end){
+                    
+                    
+                    
+
+                    let leftval = parseInt(fieldArray[li].textContent);
+                    let rightval = parseInt(fieldArray[ri].textContent);
+
+                    console.log("yo",leftval,rightval);
+
+                    
+                    
+                    if(leftval<=rightval){
+                        
+
+                        var N = Math.ceil(fieldArray.length/(2**level))+1;
+                        console.log(group*30*(fieldArray.length-1)/N);
+                        var leftPush = (group*30*(fieldArray.length-1)/N) + (pos)*50;
+                        var downPush = 100 * level;
+
+                        var obj = {"object":fieldArray[li], "comparedobject":fieldArray[ri],
+                                    "downpush": downPush, "leftpush":leftPush};
+                        animationArray.push(obj);
+                        
+                        newArray.push(fieldArray[li]);
+                        
+                        li++;
+                    }
+                    else{
+                        
+                        var N = Math.ceil(fieldArray.length/(2**level))+1;
+                        console.log(30*(fieldArray.length-1)/N);
+                        var leftPush = (group*30*(fieldArray.length-1)/N) + (pos)*50;
+                        var downPush = 100 * level;
+
+                        var obj = {"object": fieldArray[ri],"comparedobject":fieldArray[li],
+                                    "downpush": downPush, "leftpush":leftPush};
+                        animationArray.push(obj);
+                        
+                        newArray.push(fieldArray[ri]);
+                        
+                        ri++;
+                    }
+
+                    pos++;
+
+                }
+                
+
+                if(li<liEnd){
+                    while(li<liEnd){
+                        
+                        var N = Math.ceil(fieldArray.length/(2**level))+1;
+                        console.log(30*(fieldArray.length-1)/N);
+                        var leftPush = (group*30*(fieldArray.length-1)/N) + (pos)*50;
+                        var downPush = 100 * level;
+                        
+                        
+                        var obj = {"object":fieldArray[li], "comparedobject":fieldArray[ri-1],
+                                    "downpush": downPush, "leftpush":leftPush};
+                        animationArray.push(obj);
+                        
+                        newArray.push(fieldArray[li]);
+                        
+                        li++;
+                        pos++;
+                    }
+                }
+                else{
+                    while(ri<=end){
+
+                        var N = Math.ceil(fieldArray.length/(2**level))+1;
+                        console.log(30*(fieldArray.length-1)/N);
+                        var leftPush = (group*30*(fieldArray.length-1)/N) + (pos)*50;
+                        var downPush = 100 * level;
+
+                        
+
+                        var obj = {"object":fieldArray[ri], "comparedobject":fieldArray[li-1],
+                                    "downpush": downPush, "leftpush":leftPush};
+                        animationArray.push(obj);
+
+                        newArray.push(fieldArray[ri]);
+                        
+                        ri++;
+                        pos++;
+                    }
+                }
+
+
+                finalArray = subArray1.concat(newArray).concat(subArray2);
+                for(i=0;i<fieldArray.length;i++){
+                    fieldArray[i] = finalArray[i];
+                }
+                
+                for(let n=0;n<fieldArray.length;n++){
+                    console.log(fieldArray[n].textContent);
+                }
+            
+            }
+
+            function visualizeSort(){
+                var fields = document.getElementById("mainContainer").children;
+                var fieldArray = Array.from(fields);
+                
+                var li = 0;
+                var ri = 1;
+
+            
+
+                for (let i=1; i<Math.log2(fieldArray.length)+1; i++){
+
+                    var group = 0;
+
+                    for(let j=2**i;ri<fieldArray.length;){
+
+                        group++;
+                        
+                        if(ri+(ri-li)-1<fieldArray.length){
+                            
+                            moveFields(fieldArray,li,ri,ri+(ri-li)-1,i,group);
+                            
+                        }
+                        else{
+                            moveFields(fieldArray,li,ri,fieldArray.length-1,i,group);
+                        }
+
+                        li += j;
+                        ri += j;
+                    }
+                    li = 0;
+                    ri = 2**i;
+                    
+                }
+ 
+
+                var chain = function(toAnimate,select){
+                    if (toAnimate[select]){
+                        //let i = toAnimate[select]["index"];
+                        //let j = toAnimate[select]["pos"];
+                        let obj = toAnimate[select]["object"];
+                        let compobj = toAnimate[select]["comparedobject"];
+                        let downpush = toAnimate[select]["downpush"];
+                        let leftpush = toAnimate[select]["leftpush"];
+
+                        console.log(leftpush,downpush);
+        
+
+                        obj.style.background = activeColor;
+                        compobj.style.background = activeColor;
+
+                    
+                        //let leftMove = (j-i)*50;
+                        $(obj).animate({
+                            "top": downpush + "px",
+                            "left": leftpush + "px"
+                        },
+                        1000,
+                        function(){
+
+                            obj.style.background = inactiveColor;
+                            compobj.style.background = inactiveColor;
+                            
+                            chain(toAnimate,select+1);
+                        }
+                        );
+                    }
+                };
+
+                chain(animationArray,0);
+
+            }
+            function goBack() {
+                window.history.back();
+            }
+
+        </script>
+
+    </head>
+
+    <body>
+
+        <h1>Merge Sort Visualizer</h1>
+
+        <p>
+            <button onclick="generateField()">Generate Field</button>
+        </p>
+
+        <p>
+            <button onclick="visualizeSort()">Visualize Sort</button>
+        </p>
+
+        <p>
+            <button onclick="resetFields()">Reset Fields</button>
+        </p>
+
+        <div id="mainContainer">
+            
+        </div>
+        <a href="#" class="back-button" onclick="goBack()">Back</a>
+    </body>
+</html>

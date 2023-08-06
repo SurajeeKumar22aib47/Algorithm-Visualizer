@@ -125,6 +125,52 @@
     .back-button:hover {
         background-color: #cc0000;
     }
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Merge Sort Result</title>
+</head>
+<style>
+    /* Your existing CSS styles ... */
+
+    .array.merge-animate {
+        transition: transform 0.5s ease;
+    }
+
+    .merge-animation {
+        animation: mergeAnimation 1s forwards;
+    }
+
+    @keyframes mergeAnimation {
+        0% {
+            transform: translateY(-100%);
+            background-color: #ff4d4d;
+        }
+        100% {
+            transform: translateY(0);
+            background-color: green;
+        }
+    }
+    h3.button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    h3.button:hover {
+        background-color: #45a049;
+    }
+
+    h3.button:active {
+        background-color: #3e8e41;
+    }
 </style>
 <body>
     <div class="container">
@@ -140,10 +186,10 @@
             <p>{{ step.explanation }}</p>
             <p>
                 {% for num in step.step_array %}
-                    <span class="array">{{ num }}</span>
+                    <span class="array {% if step.swap_indices and forloop.counter0 in step.swap_indices %}merge-animate{% endif %}">{{ num }}</span>
                 {% endfor %}
             </p>
-            <button class="popup-button" onclick="showPopup({{ forloop.counter }})">Show Details</button>
+            
         {% endfor %}
     </div>
 
@@ -161,10 +207,37 @@
             </div>
         </div>
     {% endfor %}
-
+   
     <a href="#" class="back-button" onclick="goBack()">Back</a>
-
+    <h3><a href="{% url 'merge_vis' %}">merge sort</a></h3>
+       
+>
     <script>
+        function animateSwap(element1, element2) {
+            var temp = $('<div>');
+            element1.before(temp);
+            element2.before(element1);
+            temp.before(element2);
+            temp.remove();
+        }
+
+        function highlightSwap(element1, element2) {
+            element1.addClass('green');
+            element2.addClass('green');
+            setTimeout(() => {
+                element1.removeClass('green');
+                element2.removeClass('green');
+            }, 500);
+        }
+
+        function performSwap(stepNumber) {
+            var step = steps[stepNumber - 1];
+            var element1 = $(`#popup-box-${stepNumber} .popup-content .array:nth-child(${step.swap_indices[0] + 1})`);
+            var element2 = $(`#popup-box-${stepNumber} .popup-content .array:nth-child(${step.swap_indices[1] + 1})`);
+
+            animateSwap(element1, element2);
+            highlightSwap(element1, element2);
+        }
         function showPopup(stepNumber) {
             var popupBox = document.getElementById("popup-box-" + stepNumber);
             if (popupBox) {
@@ -182,6 +255,8 @@
         function goBack() {
             window.history.back();
         }
+        
+     
     </script>
 </body>
 </html>

@@ -1,27 +1,60 @@
-// Get references to the modal and the modal trigger button
-const modal = document.getElementById("modal");
-const modalTrigger = document.getElementById("modal-trigger");
-const closeModalBtn = document.getElementById("close-modal");
+function performSwap(stepNumber) {
+  // ... your existing code ...
 
-// Function to open the modal
-function openModal() {
-  modal.style.display = "block";
+  setTimeout(() => {
+    animateSwap(element1, element2);
+    highlightSwap(element1, element2);
+  }, stepNumber * 1500); // Adjust the delay time as needed (e.g., 1500ms)
 }
+let isPlaying = false;
+const playButton = document.getElementById('play-button');
 
-// Function to close the modal
-function closeModal() {
-  modal.style.display = "none";
-}
+function playAnimation() {
+  if (isPlaying) return;
+  isPlaying = true;
+  playButton.disabled = true;
 
-// Event listener to open the modal when the trigger button is clicked
-modalTrigger.addEventListener("click", openModal);
+  for (let i = 1; i <= steps.length; i++) {
+    setTimeout(() => {
+      performSwap(i);
 
-// Event listener to close the modal when the close button is clicked
-closeModalBtn.addEventListener("click", closeModal);
-
-// Event listener to close the modal when the user clicks outside the modal content
-window.addEventListener("click", function(event) {
-  if (event.target === modal) {
-    closeModal();
+      // Enable the play button when the animation finishes
+      if (i === steps.length) {
+        isPlaying = false;
+        playButton.disabled = false;
+      }
+    }, i * 1500); // Adjust the delay time as needed (e.g., 1500ms)
   }
-});
+}
+function animateSwap(element1, element2) {
+  const temp = $('<div>');
+  element1.before(temp);
+  element2.before(element1);
+  temp.before(element2);
+  temp.remove();
+  element1.removeClass('swapping'); // Remove any previous swapping class
+  element2.removeClass('swapping'); // Remove any previous swapping class
+}
+let isPlaying = false;
+const playButton = document.getElementById('play-button');
+
+function playAnimation() {
+  if (isPlaying) return;
+  isPlaying = true;
+  playButton.disabled = true;
+
+  // Remove the "swapping" class from all array elements before starting the animation
+  $('.array').removeClass('swapping');
+
+  for (let i = 1; i <= steps.length; i++) {
+    setTimeout(() => {
+      performSwap(i);
+
+      // Enable the play button when the animation finishes
+      if (i === steps.length) {
+        isPlaying = false;
+        playButton.disabled = false;
+      }
+    }, i * 1500); // Adjust the delay time as needed (e.g., 1500ms)
+  }
+}

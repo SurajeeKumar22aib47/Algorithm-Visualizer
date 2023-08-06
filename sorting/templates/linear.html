@@ -126,42 +126,41 @@ else:
     </code>
             </pre>
    
-        <div class="visualize-button" onclick="openPopup()">Visualize</div>
-<!-- Popup Box -->
-        <div class="popup" id="popup">
-            <div class="popup-content">
-                <span class="close-button" onclick="closePopup()">&times;</span>
-                <h2 style="font-size: 24px; color: #007bff;">Enter Your Sorted Array</h2>
-                <form method="post" onsubmit="event.preventDefault(); performBinarySearch();">
-                    <label class="input-label" for="input_list">Enter the list elements (comma-separated):</label>
-                    <input class="input-field" type="text" id="input_list" name="input_list" required><br>
-                    <label class="input-label" for="search_element">Enter the element to be searched:</label>
-                    <input class="input-field" type="text" id="search_element" name="search_element" required><br>
-                    <button onclick="openPopup()">Search</button>
+            <div class="visualize-button" onclick="openPopup()">Visualize</div>
 
-                </form>
+            <!-- Popup Box -->
+            <div class="popup" id="popup">
+                <div class="popup-content">
+                    <span class="close-button" onclick="closePopup()">&times;</span>
+                    <h2 style="font-size: 24px; color: #007bff;">Enter Your Sorted Array</h2>
+                    <form method="post" onsubmit="event.preventDefault(); performBinarySearch(); closePopup();">
+                        <label class="input-label" for="input_list">Enter the list elements (comma-separated):</label>
+                        <input class="input-field" type="text" id="input_list" name="input_list" required><br>
+                        <label class="input-label" for="search_element">Enter the element to be searched:</label>
+                        <input class="input-field" type="text" id="search_element" name="search_element" required><br>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
-
-<!-- Rest of your content goes here -->
-
-    <script>
-        function openPopup() {
-            document.getElementById('popup').style.display = 'block';
-        }
-
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
-
-        function performBinarySearch() {
-            const inputList = document.getElementById('input_list').value;
-            const numbers = inputList.split(',').map(item => Number(item.trim()));
-            const searchElement = Number(document.getElementById('search_element').value);
-            // Implement binary search logic here
-            // For visualizing, you can use animation or console logs
-        }
-    </script>
-</body>
-</html>
+        
+            <!-- Rest of your content goes here -->
+        
+            <script>
+                function openPopup() {
+                    document.getElementById('popup').style.display = 'block';
+                }
+        
+                function closePopup() {
+                    document.getElementById('popup').style.display = 'none';
+                }
+        
+                function performBinarySearch() {
+                    const inputList = document.getElementById('input_list').value;
+                    const numbers = inputList.split(',').map(item => Number(item.trim()));
+                    const searchElement = Number(document.getElementById('search_element').value);
+                    // Implement binary search logic here
+                    // For visualizing, you can use animation or console logs
+                }
+            </script>
+        </body>
+        </html>

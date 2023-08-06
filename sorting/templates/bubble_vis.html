@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+         {% load static %}
+    body {
+        background-image: url("{% static 'vis.jpg' %}");
+        background-size: cover; /* Adjust the image size as needed */
+            /* Add other background styling properties as needed */
+        }
+        
+        #mainContainer {
+            position: relative;
+        }
+
+        .inputdivField {
+            height: 50px;
+            width: 50px;
+            background: rgb(0, 0, 0);
+            position: absolute;
+            font-size: large;
+            text-align: center;
+            padding-top: 20px;
+            color: white;
+        }
+    </style>
+    <script>
+        var animationArray = [];
+        var inactiveColor = "rgb(0, 0, 0)";
+        var activeColor = "rgb(255, 0, 0)";
+
+        function generateField() {
+            container = document.getElementById("mainContainer");
+            newField = document.createElement("div");
+            newField.contentEditable = "true";
+            inputId = container.childElementCount + 1;
+            newField.id = "input" + inputId;
+            newField.className = "inputdivField";
+            newField.style.left = (container.childElementCount * 80) + "px";
+            document.getElementById("mainContainer").appendChild(newField);
+        }
+
+        function resetFields() {
+            animationArray = [];
+            container = document.getElementById("mainContainer");
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+        }
+
+        function visualizeSort() {
+            var fields = document.getElementById("mainContainer").children;
+            var fieldArray = Array.from(fields);
+            var n = fieldArray.length;
+
+            for (let i = 0; i < n - 1; i++) {
+                for (let j = 0; j < n - i - 1; j++) {
+                    let leftval = parseInt(fieldArray[j].textContent);
+                    let rightval = parseInt(fieldArray[j + 1].textContent);
+
+                    if (leftval > rightval) {
+                        var obj = {
+                            "object": fieldArray[j],
+                            "comparedobject": fieldArray[j + 1]
+                        };
+                        animationArray.push(obj);
+
+                        // Swap the elements in the array (not in the DOM yet)
+                        [fieldArray[j], fieldArray[j + 1]] = [fieldArray[j + 1], fieldArray[j]];
+                    }
+                }
+            }
+
+            var chain = function (toAnimate, select) {
+                if (toAnimate[select]) {
+                    let obj = toAnimate[select]["object"];
+                    let compobj = toAnimate[select]["comparedobject"];
+
+                    obj.style.background = activeColor;
+                    compobj.style.background = activeColor;
+
+                    let leftPosition = parseInt(obj.style.left);
+                    let comparedLeftPosition = parseInt(compobj.style.left);
+
+                    $(obj).animate({
+                            "left": comparedLeftPosition + "px"
+                        },
+                        300,
+                        function () {
+                            $(compobj).animate({
+                                    "left": leftPosition + "px"
+                                },
+                                300,
+                                function () {
+                                    obj.style.background = inactiveColor;
+                                    compobj.style.background = inactiveColor;
+
+                                    // Swap the elements in the DOM after the animation
+                                    obj.style.left = comparedLeftPosition + "px";
+                                    compobj.style.left = leftPosition + "px";
+                                    obj.parentNode.insertBefore(compobj, obj);
+                                    chain(toAnimate, select + 1);
+                                }
+                            );
+                        }
+                    );
+                }
+            };
+
+            chain(animationArray, 0);
+        }
+        function goBack() {
+                window.history.back();
+            }
+
+    </script>
+</head>
+<body>
+    <h1>Bubble Sort Visualizer</h1>
+    <p>
+        <button onclick="generateField()">Generate Field</button>
+    </p>
+    <p>
+        <button onclick="visualizeSort()">Visualize Sort</button>
+    </p>
+    <p>
+        <button onclick="resetFields()">Reset Fields</button>
+    </p>
+    <div id="mainContainer">
+    </div>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+</body>
+</html>
