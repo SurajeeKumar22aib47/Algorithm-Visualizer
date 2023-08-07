@@ -114,7 +114,8 @@ def insertion_sort(request):
         return render(request, 'insertion_result.html', context)
 
     return render(request, 'insertion_sort.html')
-
+def insertion_vis(request):
+    return render(request,'insertion_vis.html')
 
 def bubble_sort(request):
     if request.method == 'POST':

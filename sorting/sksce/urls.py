@@ -14,6 +14,7 @@ urlpatterns=[
     path('selection_vis', views.selection_vis, name='selection_vis'),
     path('bubble_vis', views.bubble_vis, name='bubble_vis'),
     path('quick_vis', views.quick_vis, name='quick_vis'),
+    path('insertion_vis', views.insertion_vis, name='insertion_vis'),
 ]
 
  

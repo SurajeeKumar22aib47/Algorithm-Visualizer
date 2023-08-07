@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        {% load static %}
+        body {
+            background-image: url("{% static 'vis.jpg' %}");
+            background-size: cover;
+            /* Adjust the image size as needed */
+            /* Add other background styling properties as needed */
+        }
+
+        #mainContainer {
+            position: relative;
+        }
+
+        .inputdivField {
+            height: 50px;
+            width: 50px;
+            background: rgb(0, 0, 0);
+            position: absolute;
+            font-size: large;
+            text-align: center;
+            padding-top: 20px;
+            color: white;
+        }
+    </style>
+
+    <script>
+        var animationArray = [];
+        var inactiveColor = "rgb(0, 0, 0)";
+        var activeColor = "rgb(255, 0, 0)";
+
+        function generateField() {
+            container = document.getElementById("mainContainer");
+            newField = document.createElement("div");
+            newField.contentEditable = "true";
+            inputId = container.childElementCount + 1;
+            newField.id = "input" + inputId;
+            newField.className = "inputdivField";
+            newField.style.left = (container.childElementCount * 80) + "px"
+            document.getElementById("mainContainer").appendChild(newField);
+        }
+
+        function resetFields() {
+            animationArray = [];
+            container = document.getElementById("mainContainer");
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+        }
+
+        function insertionSort() {
+            var fields = document.getElementById("mainContainer").children;
+            var fieldArray = Array.from(fields);
+            var n = fieldArray.length;
+
+            for (var i = 1; i < n; i++) {
+                var key = parseInt(fieldArray[i].textContent);
+                var j = i - 1;
+
+                // Shift elements greater than key to the right
+                while (j >= 0 && parseInt(fieldArray[j].textContent) > key) {
+                    fieldArray[j + 1].textContent = fieldArray[j].textContent;
+                    j--;
+
+                    // Add the animation details to the animationArray (to visualize the process)
+                    var obj = {
+                        "object": fieldArray[j + 1],
+                        "comparedobject": fieldArray[j],
+                        "downpush": 100, // Adjust as needed
+                        "leftpush": (j + 1) * 50 // Adjust as needed
+                    };
+                    animationArray.push(obj);
+                }
+
+                // Place the key in its correct position
+                fieldArray[j + 1].textContent = key;
+
+                // Add the animation details for the key placement (to visualize the process)
+                var obj = {
+                    "object": fieldArray[j + 1],
+                    "comparedobject": null,
+                    "downpush": 0, // Adjust as needed
+                    "leftpush": (j + 1) * 50 // Adjust as needed
+                };
+                animationArray.push(obj);
+            }
+        }
+
+        function visualizeSort() {
+            insertionSort();
+            var chain = function(toAnimate, select) {
+                if (toAnimate[select]) {
+                    let obj = toAnimate[select]["object"];
+                    let compobj = toAnimate[select]["comparedobject"];
+                    let downpush = toAnimate[select]["downpush"];
+                    let leftpush = toAnimate[select]["leftpush"];
+
+                    if (compobj) {
+                        compobj.style.background = activeColor;
+                    }
+
+                    obj.style.background = activeColor;
+
+                    $(obj).animate({
+                            "top": downpush + "px",
+                            "left": leftpush + "px"
+                        },
+                        500,
+                        function() {
+                            if (compobj) {
+                                compobj.style.background = inactiveColor;
+                            }
+
+                            obj.style.background = inactiveColor;
+                            chain(toAnimate, select + 1);
+                        }
+                    );
+                } else {
+                    displaySortedArray();
+                }
+            };
+
+            chain(animationArray, 0);
+        }
+
+        function displaySortedArray() {
+            var fields = document.getElementById("mainContainer").children;
+            var fieldArray = Array.from(fields);
+            var sortedArray = fieldArray.map(field => parseInt(field.textContent)).sort((a, b) => a - b);
+
+            for (let i = 0; i < fieldArray.length; i++) {
+                fieldArray[i].textContent = sortedArray[i].toString();
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Insertion Sort Visualizer</h1>
+
+    <p>
+        <button onclick="generateField()">Generate Field</button>
+    </p>
+
+    <p>
+        <button onclick="visualizeSort()">Visualize Sort</button>
+    </p>
+
+    <p>
+        <button onclick="resetFields()">Reset Fields</button>
+    </p>
+
+    <div id="mainContainer">
+    </div>
+
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+</body>
+
+</html>
