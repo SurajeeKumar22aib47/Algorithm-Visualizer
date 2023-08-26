@@ -134,6 +134,32 @@
     .array.swapping {
         transform: translateX(100px); /* Adjust the distance as needed */
     }
+    .button-container {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height:30vh; /* Adjust as needed to center vertically */
+        }
+
+        .content {
+         margin-right: 10px;
+         color: white;
+        }
+
+        .button {
+         display: inline-block;
+         padding: 20px 30px;
+         background-color: #ff002b;
+         color: white;
+         text-decoration: none;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+         transition: background-color 0.3s ease-in-out;
+        }
+
+        .button:hover {
+         background-color:
 </style>
 
 <body>
@@ -191,7 +217,10 @@
     {% endfor %}
 
     <a href="#" class="back-button" onclick="goBack()">Back</a>
-    <h3><a href="{% url 'insertion_vis' %}">insertion sort</a></h3>
+    <div class="button-container">
+        <h3 class="content" >Click here:</h3>
+        <a href="{% url 'insertion_vis' %}" class="button">Visualize Insertion Sort</a>
+    </div>
     <button id="play-button" onclick="playAnimation()">Play</button>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -248,6 +277,15 @@ for (var stepNumber = 1; stepNumber <= steps.length; stepNumber++) {
 performSwap(stepNumber);
 }
 }
+const button = document.querySelector('.button');
+
+        button.addEventListener('mousedown', () => {
+            button.style.backgroundColor = '#004080';
+        });
+
+        button.addEventListener('mouseup', () => {
+            button.style.backgroundColor = '#007BFF';
+        });
     </script>
 </body>
 </html>

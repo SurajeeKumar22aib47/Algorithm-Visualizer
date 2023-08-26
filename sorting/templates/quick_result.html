@@ -125,6 +125,33 @@
     .back-button:hover {
         background-color: #cc0000;
     }
+    .button-container {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height:30vh; /* Adjust as needed to center vertically */
+        }
+
+        .content {
+         margin-right: 10px;
+         color: white;
+        }
+
+        .button {
+         display: inline-block;
+         padding: 20px 30px;
+         background-color: #ff002b;
+         color: white;
+         text-decoration: none;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+         transition: background-color 0.3s ease-in-out;
+        }
+
+        .button:hover {
+         background-color: #9f2b2b;
+        }
 </style>
 <body>
     <div class="container">
@@ -163,7 +190,11 @@
     {% endfor %}
 
     <a href="#" class="back-button" onclick="goBack()">Back</a>
-    <h3><a href="{% url 'quick_vis' %}">quick sort</a></h3>
+    <div class="button-container">
+        <h3 class="content" >Click here:</h3>
+        <a href="{% url 'quick_vis' %}" class="button">Visualize Quick Sort</a>
+    </div>
+   
     <script>
         function animateSwap(element1, element2) {
             var temp = $('<div>');
@@ -207,6 +238,15 @@
         function goBack() {
             window.history.back();
         }
+        const button = document.querySelector('.button');
+
+        button.addEventListener('mousedown', () => {
+            button.style.backgroundColor = '#004080';
+        });
+
+        button.addEventListener('mouseup', () => {
+            button.style.backgroundColor = '#007BFF';
+        });
     </script>
 </body>
 </html>
