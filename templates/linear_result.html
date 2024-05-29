@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Linear Search Result</title>
+    
+</head>
+<style>
+     {% load static %}
+    body {
+        background-image: url("{% static 'result.avif' %}");
+        background-size: cover; /* Adjust the image size as needed */
+            /* Add other background styling properties as needed */
+        }
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #5c5a5a;
+    box-shadow: 0 2px 5px rgba(250, 249, 249, 0.2);
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.search-result {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.found {
+    color: rgb(0, 0, 0);
+}
+
+/* Optional: Add more styles as per your preference */
+
+</style>
+<body>
+    <div class="container">
+        <h1>Linear Search Result</h1>
+
+        <div class="search-result">
+            <p><strong>Input List:</strong> {{ input_list }}</p>
+            <p><strong>Search Element:</strong> {{ search_element }}</p>
+            <p><strong>Found Index:</strong> {{ found_index }}</p>
+        </div>
+
+        <h2>Step-by-Step Search Process:</h2>
+        <ul>
+            {% for step in steps %}
+                <li>
+                    <strong>Index:</strong> {{ step.index }},
+                    <strong>Element:</strong> {{ step.element }},
+                    {% if step.found %}
+                        <strong class="found">Found</strong>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1">  
+    <title>My Sorting App - Home</title>
+    <style>
+        {% load static %}
+        body {
+            background-image: url("{% static 'main.jpg' %}");
+            background-size: cover;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 200px;
+            animation: glowing 2s ease-in-out infinite;
+            border: 2px solid #ffffff;
+            padding: 10px;
+            display: inline-block;
+        }
+        @keyframes glowing {
+            0% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            }
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .sort-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .sort {
+            width: 250px;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+            background-color: #1c1c1c;
+            border-radius: 5px;
+            box-shadow: 5px 15px 15px #57fcf9;
+            cursor: pointer; /* Change cursor to pointer to indicate clickable element */
+        }
+        .sort footer{
+            background-color: #d2ff9b;
+            border-radius: 5px;
+            width: 100%;
+            padding: 0;
+            margin-right: 2px;
+            box-shadow: 2px 3px 3px #a8d4fc;
+        }
+        .sort h3 {
+            color: #1c1c1c;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+        .sort-container1 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .service1 {
+            width: 250px;
+            margin: 30px;
+            padding: 30px;
+            text-align: center;
+            background-color: #1c1c1c;
+            border-radius: 5px;
+            box-shadow: 5px 15px 15px #7DF9FF;
+        }
+        .mySlides{
+            width: 100px;
+            height: 100px;
+        }
+        .box1 form {
+            max-width: 600px;
+            height: 300px;
+            margin: 0 auto;
+            background: #282828;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-left: 500px;
+            margin-top: 100px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .box1 form label {
+            display: block;
+            margin-bottom: 10px;
+            color: #f466da;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading-section">
+        <h1>Sorting Visualizer!</h1>
+    </div>
+    <div class="sorting-section">
+        <section id="sort">
+            <div class="sort-container">
+                <div class="sort" onclick="window.location.href='{% url 'merge_sort' %}'">
+                    <footer><h3>Merge Sort</h3></footer>
+                </div>
+                <div class="sort" onclick="window.location.href='{% url 'bubble_sort' %}'">
+                    <footer><h3>Bubble Sort</h3></footer>
+                </div>
+                <div class="sort" onclick="window.location.href='{% url 'quick_sort' %}'">
+                    <footer><h3>Quick Sort</h3></footer>
+                </div>
+                <div class="sort" onclick="window.location.href='{% url 'heap_sort' %}'">
+                    <footer><h3>Heap Sort</h3></footer>
+                </div>
+                <div class="sort" onclick="window.location.href='{% url 'insertion_sort' %}'">
+                    <footer><h3>Insertion sort</h3></footer>
+                </div>
+                <div class="sort" onclick="window.location.href='{% url 'selection_sort' %}'">
+                    <footer><h3>Selection sort</h3></footer>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
