@@ -4,6 +4,10 @@ An interactive **Algorithm Visualizer** built with **Django (Backend)** and **Ja
 
 🔗 **Live Demo:** [Algorithm Visualizer](https://algorithm-visualizer-2ygg.onrender.com)  
 
+
+Uploading My Sorting App - Home - Google Chrome 2025-03-03 15-53-51.mp4…
+
+
 ## 🚀 Key Features  
 
 ✅ **Sorting Algorithms**  
