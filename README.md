@@ -94,5 +94,4 @@ For queries, reach out via:
 📧 **Email:** sksurajee1245@gmail.com  
 🌐 **Website:** [Surajee Kumar S](https://surajee-kumar-portfolio.netlify.app/)  
 🔗 **LinkedIn:** [Surajee Kumar](https://www.linkedin.com/in/surajee-kumar-853909256)  
-# sort-sksce
-It is sorting and searching visualizer
+
